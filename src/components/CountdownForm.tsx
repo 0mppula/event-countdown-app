@@ -10,26 +10,24 @@ import { DateTimePicker } from './DateTimePicker';
 function CountdownForm() {
 	const [title, setTitle] = useState('');
 	// Default today's date
-	const [startDate, setStartDate] = useState<Date | undefined>(new Date());
+	const [eventDate, setEventDate] = useState<Date | undefined>(new Date());
 	const [startTime, setStartTime] = useState('12:00');
 	// Default end date is the next day
-	const [endDate, setEndDate] = useState<Date | undefined>(
-		new Date(Date.now() + 7 * 24 * 60 * 60 * 1_000)
-	);
+	const [createdAt, setCreatedAt] = useState<Date | undefined>(new Date(Date.now()));
 	const [endTime, setEndTime] = useState('12:00');
 
 	const navigate = useNavigate();
 
 	const handleSubmit = () => {
-		if (!title || !startDate || !endDate) return;
+		if (!title || !eventDate || !createdAt) return;
 
 		// Combine date and time — but use UTC to avoid local timezone shifts
 		const [startHour, startMin] = startTime.split(':').map(Number);
 		const startDateTime = new Date(
 			Date.UTC(
-				startDate.getUTCFullYear(),
-				startDate.getUTCMonth(),
-				startDate.getUTCDate(),
+				eventDate.getUTCFullYear(),
+				eventDate.getUTCMonth(),
+				eventDate.getUTCDate(),
 				startHour,
 				startMin,
 				0,
@@ -38,11 +36,11 @@ function CountdownForm() {
 		);
 
 		const [endHour, endMin] = endTime.split(':').map(Number);
-		const endDateTime = new Date(
+		const createdAtTime = new Date(
 			Date.UTC(
-				endDate.getUTCFullYear(),
-				endDate.getUTCMonth(),
-				endDate.getUTCDate(),
+				createdAt.getUTCFullYear(),
+				createdAt.getUTCMonth(),
+				createdAt.getUTCDate(),
 				endHour,
 				endMin,
 				0,
@@ -53,20 +51,15 @@ function CountdownForm() {
 		const params = new URLSearchParams({
 			title,
 			start: startDateTime.getTime().toString(),
-			end: endDateTime.getTime().toString(),
+			createdAt: createdAtTime.getTime().toString(),
 		});
 
 		// Redirect to countdown page with parameters
 		navigate(`/countdown?${params.toString()}`);
 	};
 
-	const handleSetStartDate = (date: Date | undefined) => {
-		if (endDate && date && date >= endDate) {
-			// if the new start date is after or equal to the current end date, set the end date 24 hours after the new start date
-			setEndDate(new Date(date.getTime() + 24 * 60 * 60 * 1_000));
-		}
-
-		setStartDate(date);
+	const handleSetEventDate = (date: Date | undefined) => {
+		setEventDate(date);
 	};
 
 	return (
@@ -95,22 +88,21 @@ function CountdownForm() {
 
 					<div className="grid md:grid-cols-2 gap-6">
 						<DateTimePicker
-							label="Start Date & Time"
-							date={startDate}
-							onChange={handleSetStartDate}
+							label="Event Date & Time"
+							date={eventDate}
+							onChange={handleSetEventDate}
 						/>
 
 						<DateTimePicker
-							label="End Date & Time"
-							date={endDate}
-							onChange={(val) => setEndDate(val)}
-							minDate={startDate}
+							label="Created at"
+							date={createdAt}
+							onChange={(val) => setCreatedAt(val)}
 						/>
 					</div>
 
 					<Button
 						onClick={handleSubmit}
-						disabled={!title || !startDate || !endDate}
+						disabled={!title || !eventDate || !createdAt}
 						className="w-full h-12 text-lg font-semibold shadow-lg disabled:opacity-50"
 					>
 						Start Countdown
