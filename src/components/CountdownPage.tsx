@@ -1,5 +1,5 @@
 import TimeElement from '@/components/TimeElement';
-import { format, formatDuration } from 'date-fns';
+import { format } from 'date-fns';
 import { ArrowBigLeft } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -122,12 +122,11 @@ const CountdownPage = () => {
 
 			<div className="mt-4 flex flex-col md:flex-row gap-4 justify-center">
 				<p className="text-center text-sm">
-					Event starts at: {format(new Date(start), "MMM d, yyyy 'at' HH:mm 'UTC'")}
+					Event starts at: {format(new Date(start), "MMM d, yyyy 'at' HH:mm")}
 				</p>
 
 				<p className="text-center text-sm">
-					Event is created at:{' '}
-					{format(new Date(createdAt), "MMM d, yyyy 'at' HH:mm 'UTC'")}
+					Event is created at: {format(new Date(createdAt), "MMM d, yyyy 'at' HH:mm")}
 				</p>
 			</div>
 

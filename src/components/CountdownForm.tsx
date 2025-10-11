@@ -11,10 +11,10 @@ function CountdownForm() {
 	const [title, setTitle] = useState('');
 	// Default today's date
 	const [eventDate, setEventDate] = useState<Date | undefined>(new Date());
-	const [startTime, setStartTime] = useState('12:00');
+	const [startTime] = useState('12:00');
 	// Default end date is the next day
 	const [createdAt, setCreatedAt] = useState<Date | undefined>(new Date(Date.now()));
-	const [endTime, setEndTime] = useState('12:00');
+	const [endTime] = useState('12:00');
 
 	const navigate = useNavigate();
 
