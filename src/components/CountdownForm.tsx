@@ -22,34 +22,10 @@ function CountdownForm() {
 	const handleSubmit = () => {
 		if (!title || !eventDate || !createdAt) return;
 
-		const startDateTime = new Date(
-			Date.UTC(
-				eventDate.getUTCFullYear(),
-				eventDate.getUTCMonth(),
-				eventDate.getUTCDate(),
-				eventDate.getUTCHours(),
-				eventDate.getUTCMinutes(),
-				0,
-				0
-			)
-		);
-
-		const createdAtTime = new Date(
-			Date.UTC(
-				createdAt.getUTCFullYear(),
-				createdAt.getUTCMonth(),
-				createdAt.getUTCDate(),
-				createdAt.getUTCHours(),
-				createdAt.getUTCMinutes(),
-				0,
-				0
-			)
-		);
-
 		const params = new URLSearchParams({
 			title,
-			start: startDateTime.getTime().toString(),
-			createdAt: createdAtTime.getTime().toString(),
+			start: eventDate.getTime().toString(),
+			createdAt: createdAt.getTime().toString(),
 		});
 
 		// Redirect to countdown page with parameters
@@ -103,13 +79,11 @@ function CountdownForm() {
 									label="Created at (usually now)"
 									date={createdAt}
 									onChange={(val) => setCreatedAt(val)}
-									// minDate is start of today
-									minDate={new Date(new Date().setHours(0, 0, 0, 0))}
 								/>
 							</div>
 
 							<Button
-								onClick={handleSubmit}
+								type="submit"
 								disabled={!title || !eventDate || !createdAt}
 								className="w-full disabled:opacity-50"
 							>

@@ -88,7 +88,7 @@ const CountdownPage = () => {
 			totalDuration,
 			elapsed: Math.min(elapsed, totalDuration),
 		};
-	}, [start, createdAt]);
+	}, [start, createdAt, remainingMS]);
 
 	const formatDurationMS = (ms: number) => {
 		const totalSeconds = Math.floor(ms / 1000);
