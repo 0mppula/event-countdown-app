@@ -85,6 +85,7 @@ export function DateTimePicker({
 						className="space-y-4"
 						onSubmit={(e) => {
 							e.preventDefault();
+							e.stopPropagation();
 							handleSubmit();
 						}}
 					>
