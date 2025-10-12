@@ -72,22 +72,22 @@ const CountdownPage = () => {
 
 	return (
 		<>
-			<h1 className="scroll-m-20 text-5xl font-extrabold tracking-tight lg:text-6xl mb-4 lg:mb-6 text-center">
+			<h1 className="scroll-m-20 text-4xl md:text-5xl font-extrabold tracking-tight mb-4 lg:mb-6 text-center text-balance">
 				Countdown Until <span className="text-primary">{title}</span>
 			</h1>
 
-			<div className="mt-4 md:mt-6 grid grid-cols-4 gap-2 md:gap-4">
+			<div className="w-full mt-4 grid grid-cols-4 gap-3 md:gap-4">
 				{Object.entries(countdown).map(([unit, value]) => (
 					<TimeElement key={unit} value={value} unit={unit} />
 				))}
 			</div>
 
-			<Card className="w-full max-w-2xl mt-8 backdrop-blur-xl ">
+			<Card className="w-full mt-8 backdrop-blur-xl ">
 				<CardContent>
 					<div className="space-y-4">
 						<div className="flex justify-between items-center mb-2">
 							<span className="text-sm font-medium">Progress</span>
-							<span className="text-sm font-bold">
+							<span className="text-sm font-medium">
 								{progressStats.percentElapsed}% elapsed
 							</span>
 						</div>
@@ -97,35 +97,39 @@ const CountdownPage = () => {
 							className="h-3"
 						/>
 
-						<div className="grid grid-cols-2 gap-4 mt-6">
-							<div className="text-center p-4 rounded-lg">
+						<div className="grid grid-cols-2 gap-4 mt-2">
+							<div className="text-center p-2">
 								<div className="text-3xl font-bold mb-1">
 									{progressStats.percentElapsed}%
 								</div>
-								<div className="text-sm">Time Elapsed</div>
-								<div className="text-xs mt-1">
+
+								<div className="text-sm text-muted-foreground">Time Elapsed</div>
+								<div className="text-sm mt-1 text-muted-foreground">
 									{formatDurationMS(progressStats.elapsed)}
 								</div>
 							</div>
 
-							<div className="text-center p-4 rounded-lg">
+							<div className="text-center p-2">
 								<div className="text-3xl font-bold mb-1">
 									{progressStats.percentRemaining}%
 								</div>
-								<div className="text-sm">Time Remaining</div>
-								<div className="text-xs mt-1">{formatDurationMS(remainingMS)}</div>
+
+								<div className="text-sm text-muted-foreground">Time Remaining</div>
+								<div className="text-sm mt-1 text-muted-foreground">
+									{formatDurationMS(remainingMS)}
+								</div>
 							</div>
 						</div>
 					</div>
 				</CardContent>
 			</Card>
 
-			<div className="mt-4 flex flex-col md:flex-row gap-4 justify-center">
-				<p className="text-center text-sm">
+			<div className="mt-4 flex flex-col md:flex-row gap-4 justify-between w-full">
+				<p className="text-sm">
 					Event starts at: {format(new Date(start), "MMM d, yyyy 'at' HH:mm")}
 				</p>
 
-				<p className="text-center text-sm">
+				<p className="text-sm">
 					Event is created at: {format(new Date(createdAt), "MMM d, yyyy 'at' HH:mm")}
 				</p>
 			</div>

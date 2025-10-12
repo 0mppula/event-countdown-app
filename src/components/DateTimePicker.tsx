@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format, isBefore, isSameDay } from 'date-fns';
-import { CalendarIcon, Check, Clock } from 'lucide-react';
+import { format, isBefore } from 'date-fns';
+import { CalendarIcon, Check } from 'lucide-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -34,9 +34,12 @@ export function DateTimePicker({
 
 	const handleSubmit = () => {
 		if (!tempDate) return;
+
 		const [h, m] = tempTime.split(':').map(Number);
 		const newDate = new Date(tempDate);
+
 		newDate.setHours(h, m, 0, 0);
+
 		onChange(newDate);
 		setOpen(false);
 	};
@@ -44,28 +47,14 @@ export function DateTimePicker({
 	// Disable dates before minDate
 	const isDateDisabled = (date: Date) => {
 		if (!minDate) return false;
+
 		return isBefore(date, minDate);
 	};
-
-	// Compute minimum time if same day as minDate
-	const minTimeString = React.useMemo(() => {
-		if (!minDate || !tempDate) return '00:00';
-		if (!isSameDay(minDate, tempDate)) return '00:00';
-		const h = String(minDate.getHours()).padStart(2, '0');
-		const m = String(minDate.getMinutes()).padStart(2, '0');
-		return `${h}:${m}`;
-	}, [minDate, tempDate]);
 
 	// Ensure user can’t pick time before minDate on same day
 	const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value;
-		if (isSameDay(tempDate || new Date(), minDate || new Date()) && minDate) {
-			const [h, m] = value.split(':').map(Number);
-			const [minH, minM] = minTimeString.split(':').map(Number);
-			const selectedMinutes = h * 60 + m;
-			const minMinutes = minH * 60 + minM;
-			if (selectedMinutes < minMinutes) value = minTimeString;
-		}
+
 		setTempTime(value);
 	};
 
@@ -74,11 +63,13 @@ export function DateTimePicker({
 			{label && <p className="text-sm font-medium">{label}</p>}
 			<Popover open={open} onOpenChange={setOpen}>
 				<PopoverTrigger asChild>
-					<Button variant="outline" className="w-full justify-between">
+					<Button variant="outline" className="w-full justify-between overflow-hidden">
 						{date ? (
 							<>
-								{format(date, 'PPP p')}
-								<CalendarIcon className="ml-2 h-4 w-4 opacity-50" />
+								<span className="w-32 truncate flex-1 text-left">
+									{format(date, 'PPP p')}
+								</span>
+								<CalendarIcon className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
 							</>
 						) : (
 							<>
@@ -89,35 +80,37 @@ export function DateTimePicker({
 					</Button>
 				</PopoverTrigger>
 
-				<PopoverContent className="w-auto p-4 space-y-4" align="start">
-					<Calendar
-						mode="single"
-						selected={tempDate}
-						onSelect={setTempDate}
-						className="rounded-md"
-						disabled={isDateDisabled}
-					/>
-
-					<div className="flex items-center gap-2">
-						<Clock className="w-4 h-4" />
-						<Input
-							type="time"
-							value={tempTime}
-							onChange={handleTimeChange}
-							min={minTimeString}
-							className="h-10"
+				<PopoverContent align="end" className="w-full p-4">
+					<form
+						className="space-y-4"
+						onSubmit={(e) => {
+							e.preventDefault();
+							handleSubmit();
+						}}
+					>
+						<Calendar
+							mode="single"
+							selected={tempDate}
+							onSelect={setTempDate}
+							className="rounded-md w-full p-0"
+							disabled={isDateDisabled}
 						/>
-					</div>
 
-					<div className="flex justify-end">
-						<Button
-							onClick={handleSubmit}
-							disabled={!tempDate}
-							className="w-full h-10 px-4"
-						>
-							<Check className="w-4 h-4 mr-1" /> Done
-						</Button>
-					</div>
+						<div className="flex items-center gap-2">
+							<Input
+								type="time"
+								value={tempTime}
+								onChange={handleTimeChange}
+								className="flex-1 min-w-0"
+							/>
+
+							<Button disabled={!tempDate} className="flex-shrink-0" type="submit">
+								<Check className="w-4 h-4" />
+
+								<span className="sr-only">Done</span>
+							</Button>
+						</div>
+					</form>
 				</PopoverContent>
 			</Popover>
 		</div>

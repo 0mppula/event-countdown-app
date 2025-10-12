@@ -11,20 +11,20 @@ const TimeElement = ({ value, unit, className, ...props }: TimeElementProps) => 
 	const { isSm } = useWindowDimensions();
 
 	return (
-		<div>
+		<div className="w-full">
 			<Card
 				className={cn(
-					'flex items-center flex-col px-4 md:px-6 py-6 md:py-8 mb-2 md:mb-4 w-auto md:min-w-36',
+					'flex items-center w-full flex-col px-4 py-6 mb-2 md:mb-4',
 					className
 				)}
 				{...props}
 			>
-				<h3 className="scroll-m-20 text-5xl font-extrabold tracking-tight lg:text-7xl">
+				<h3 className="scroll-m-20 text-4xl sm:text-5xl font-extrabold tracking-tight">
 					{value}
 				</h3>
 			</Card>
 
-			<h4 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors first:mt-0 text-center capitalize">
+			<h4 className="scroll-m-20 text-2xl sm:text-3xl font-semibold tracking-tight transition-colors first:mt-0 text-center capitalize">
 				{isSm ? unit[0] : unit}
 			</h4>
 		</div>
