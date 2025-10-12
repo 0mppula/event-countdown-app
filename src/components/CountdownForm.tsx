@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { DateTimePicker } from './DateTimePicker';
+import { useTitle } from '@/hooks/useTitle';
 
 function CountdownForm() {
 	const [title, setTitle] = useState('');
@@ -18,6 +19,7 @@ function CountdownForm() {
 	const [createdAt, setCreatedAt] = useState<Date | undefined>(new Date(Date.now()));
 
 	const navigate = useNavigate();
+	useTitle('Create Countdown');
 
 	const handleSubmit = () => {
 		if (!title || !eventDate || !createdAt) return;
