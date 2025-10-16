@@ -11,8 +11,12 @@ import { useTitle } from '@/hooks/useTitle';
 const CountdownPage = () => {
 	const [searchParams] = useSearchParams();
 	const title = searchParams.get('title') || 'Your Event';
-	const start = Number(searchParams.get('start')) || Date.now();
-	const createdAt = Number(searchParams.get('createdAt')) || Date.now();
+	
+	const startParam = searchParams.get('start');
+	const createdAtParam = searchParams.get('createdAt');
+
+	const start = startParam ? new Date(startParam).getTime() : Date.now();
+	const createdAt = createdAtParam ? new Date(createdAtParam).getTime() : Date.now();
 
 	const navigate = useNavigate();
 
