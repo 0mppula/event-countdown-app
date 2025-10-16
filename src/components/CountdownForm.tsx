@@ -26,8 +26,8 @@ function CountdownForm() {
 
 		const params = new URLSearchParams({
 			title,
-			start: eventDate.getTime().toString(),
-			createdAt: createdAt.getTime().toString(),
+			start: eventDate.toISOString(),
+			createdAt: createdAt.toISOString(),
 		});
 
 		// Redirect to countdown page with parameters
